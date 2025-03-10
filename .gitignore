@@ -5,3 +5,6 @@
 # vscode
 .vscode/
 *.code-workspace
+
+# Ignore local configurations.
+.envrc
