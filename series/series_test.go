@@ -814,83 +814,98 @@ func TestInts(t *testing.T) {
 
 func TestFloats(t *testing.T) {
 	table := []struct {
-		series   Series
-		expected string
+		series    Series
+		precision int
+		expected  string
 	}{
 		{
-			Floats([]string{"A", "B", "1", "2"}),
-			"[NaN NaN 1.000000 2.000000]",
+			series:   Floats([]string{"A", "B", "1", "2"}),
+			expected: "[NaN NaN 1.000000 2.000000]",
 		},
 		{
-			Floats([]string{"1"}),
-			"[1.000000]",
+			series:   Floats([]string{"1"}),
+			expected: "[1.000000]",
 		},
 		{
-			Floats("2.1"),
-			"[2.100000]",
+			series:   Floats("2.1"),
+			expected: "[2.100000]",
 		},
 		{
-			Floats([]int{1, 2, 3}),
-			"[1.000000 2.000000 3.000000]",
+			series:   Floats([]int{1, 2, 3}),
+			expected: "[1.000000 2.000000 3.000000]",
 		},
 		{
-			Floats([]int{2}),
-			"[2.000000]",
+			series:   Floats([]int{2}),
+			expected: "[2.000000]",
 		},
 		{
-			Floats(-1),
-			"[-1.000000]",
+			series:   Floats(-1),
+			expected: "[-1.000000]",
 		},
 		{
-			Floats([]float64{1.1, 2, 3}),
-			"[1.100000 2.000000 3.000000]",
+			series:   Floats([]float64{1.1, 2, 3}),
+			expected: "[1.100000 2.000000 3.000000]",
 		},
 		{
-			Floats([]float64{2}),
-			"[2.000000]",
+			series:   Floats([]float64{2}),
+			expected: "[2.000000]",
 		},
 		{
-			Floats(-1.0),
-			"[-1.000000]",
+			series:   Floats(-1.0),
+			expected: "[-1.000000]",
 		},
 		{
-			Floats(math.NaN()),
-			"[NaN]",
+			series:   Floats(math.NaN()),
+			expected: "[NaN]",
 		},
 		{
-			Floats(math.Inf(1)),
-			"[+Inf]",
+			series:   Floats(math.Inf(1)),
+			expected: "[+Inf]",
 		},
 		{
-			Floats(math.Inf(-1)),
-			"[-Inf]",
+			series:   Floats(math.Inf(-1)),
+			expected: "[-Inf]",
 		},
 		{
-			Floats([]bool{true, true, false}),
-			"[1.000000 1.000000 0.000000]",
+			series:   Floats([]bool{true, true, false}),
+			expected: "[1.000000 1.000000 0.000000]",
 		},
 		{
-			Floats([]bool{false}),
-			"[0.000000]",
+			series:   Floats([]bool{false}),
+			expected: "[0.000000]",
 		},
 		{
-			Floats(true),
-			"[1.000000]",
+			series:   Floats(true),
+			expected: "[1.000000]",
 		},
 		{
-			Floats([]int{}),
-			"[]",
+			series:   Floats([]int{}),
+			expected: "[]",
 		},
 		{
-			Floats(nil),
-			"[NaN]",
+			series:   Floats(nil),
+			expected: "[NaN]",
 		},
 		{
-			Floats(Strings([]string{"1", "2", "3"})),
-			"[1.000000 2.000000 3.000000]",
+			series:   Floats(Strings([]string{"1", "2", "3"})),
+			expected: "[1.000000 2.000000 3.000000]",
+		},
+		{
+			series:   Floats(Strings([]string{"1.19999999"})),
+			expected: "[1.200000]",
+		},
+		{
+			series:    Floats(Strings([]string{"1.19999999"})),
+			precision: 10,
+			expected:  "[1.1999999900]",
 		},
 	}
 	for testnum, test := range table {
+		defaultPrecision := FloatPrecision
+		if test.precision > 0 {
+			FloatPrecision = test.precision
+		}
+
 		if err := test.series.Err; err != nil {
 			t.Errorf("Test:%v\nError:%v", testnum, err)
 		}
@@ -905,6 +920,8 @@ func TestFloats(t *testing.T) {
 		if err := checkTypes(test.series); err != nil {
 			t.Errorf("Test:%v\nError:%v", testnum, err)
 		}
+
+		FloatPrecision = defaultPrecision
 	}
 }
 

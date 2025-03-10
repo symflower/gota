@@ -6,6 +6,9 @@ import (
 	"strconv"
 )
 
+// FloatPrecision defines the precision for handling floats.
+var FloatPrecision int = 6
+
 type floatElement struct {
 	e   float64
 	nan bool
@@ -76,7 +79,7 @@ func (e floatElement) String() string {
 	if e.IsNA() {
 		return "NaN"
 	}
-	return fmt.Sprintf("%f", e.e)
+	return strconv.FormatFloat(e.e, 'f', FloatPrecision, 64)
 }
 
 func (e floatElement) Int() (int, error) {
