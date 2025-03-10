@@ -26,5 +26,5 @@ jobs:
         shell: bash # Explicitly use Bash because otherwise failing Windows jobs are not erroring.
 
       - name: Test
-        run: go test ./...
+        run: go test -v ./...
         shell: bash # Explicitly use Bash because otherwise failing Windows jobs are not erroring.
