@@ -1,0 +1,20 @@
+name: CI
+
+on: ["push", "release"]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: "Run tests and lint artifacts"
+    secrets: inherit
+    strategy:
+      fail-fast: false # Run the whole matrix for maximum information. No matter if we fail with one job early.
+      matrix:
+        os:
+          - "ubuntu-latest"
+    uses: ./.github/workflows/job-test.yml
+    with:
+      os: ${{ matrix.os }}
