@@ -1,14 +1,12 @@
-Gota: DataFrames, Series and Data Wrangling for Go
-==================================================
+# Gota: DataFrames, Series and Data Wrangling for Go
 
 Meet us on Slack: Slack: [gophers.slack.com](https://gophers.slack.com) #go-gota ([invite](https://gophersinvite.herokuapp.com/))
 
 This is an implementation of DataFrames, Series and data wrangling
 methods for the Go programming language. The API is still in flux so
-*use at your own risk*.
+_use at your own risk_.
 
-DataFrame
----------
+## DataFrame
 
 The term DataFrame typically refers to a tabular dataset that can be
 viewed as a two dimensional table. Often the columns of this dataset
@@ -25,6 +23,7 @@ them, summarize the data for individual features or apply functions to
 entire rows or columns, all while keeping column type integrity.
 
 ### Usage
+
 #### Loading data
 
 DataFrames can be constructed passing Series to the dataframe.New constructor
@@ -38,7 +37,7 @@ df := dataframe.New(
 )
 ```
 
-You can also load the data directly from other formats. 
+You can also load the data directly from other formats.
 The base loading function takes some records in the
 form `[][]string` and returns a new DataFrame from there:
 
@@ -190,7 +189,7 @@ filAlt := df.FilterAggregation(
     dataframe.Or,
     dataframe.F{"A", series.Eq, "a"},
     dataframe.F{"B", series.Greater, 4},
-) 
+)
 ```
 
 Filters inside Filter are combined as OR operations, alternatively we can use `df.FilterAggragation` with `dataframe.Or`.
@@ -199,7 +198,7 @@ If we want to combine filters with AND operations, we can use `df.FilterAggregat
 
 ```go
 fil := df.FilterAggregation(
-    dataframe.And, 
+    dataframe.And,
     dataframe.F{"A", series.Eq, "a"},
     dataframe.F{"D", series.Eq, true},
 )
@@ -219,14 +218,15 @@ fil2 := fil.Filter(
 )
 ```
 
-Filtering is based on predefined comparison operators: 
-* `series.Eq`
-* `series.Neq`
-* `series.Greater`
-* `series.GreaterEq`
-* `series.Less`
-* `series.LessEq`
-* `series.In`
+Filtering is based on predefined comparison operators:
+
+- `series.Eq`
+- `series.Neq`
+- `series.Greater`
+- `series.GreaterEq`
+- `series.Less`
+- `series.LessEq`
+- `series.In`
 
 However, if these filter operations are not sufficient, we can use user-defined comparators.
 We use `series.CompFunc` and a user-defined function with the signature `func(series.Element) bool` to provide user-defined filters to `df.Filter` and `df.FilterAggregation`.
@@ -255,7 +255,7 @@ This example filters rows based on whether they have a cell value starting with 
 GroupBy && Aggregation
 
 ```go
-groups := df.GroupBy("key1", "key2") // Group by column "key1", and column "key2" 
+groups := df.GroupBy("key1", "key2") // Group by column "key1", and column "key2"
 aggre := groups.Aggregation([]AggregationType{Aggregation_MAX, Aggregation_MIN}, []string{"values", "values2"}) // Maximum value in column "values",  Minimum value in column "values2"
 ```
 
@@ -359,7 +359,7 @@ if a.Err != nil {
 fmt.Println(flights)
 
 > [336776x20] DataFrame
-> 
+>
 >     X0    year  month day   dep_time sched_dep_time dep_delay arr_time ...
 >  0: 1     2013  1     1     517      515            2         830      ...
 >  1: 2     2013  1     1     533      529            4         850      ...
@@ -373,7 +373,7 @@ fmt.Println(flights)
 >  9: 10    2013  1     1     558      600            -2        753      ...
 >     ...   ...   ...   ...   ...      ...            ...       ...      ...
 >     <int> <int> <int> <int> <int>    <int>          <int>     <int>    ...
-> 
+>
 > Not Showing: sched_arr_time <int>, arr_delay <int>, carrier <string>, flight <int>,
 > tailnum <string>, origin <string>, dest <string>, air_time <int>, distance <int>, hour <int>,
 > minute <int>, time_hour <string>
@@ -402,8 +402,7 @@ func (m matrix) T() mat.Matrix {
 }
 ```
 
-Series
-------
+## Series
 
 Series are essentially vectors of elements of the same type with
 support for missing values. Series are the building blocks for
@@ -423,12 +422,12 @@ For more information about the API, make sure to check:
 - [dataframe godoc][3]
 - [series godoc][4]
 
-License
--------
+## License
+
 Copyright 2016 Alejandro Sanchez Brotons
 
 Licensed under the Apache License, Version 2.0 (the "License"); you
-may not use this file except in compliance with the License.  You may
+may not use this file except in compliance with the License. You may
 obtain a copy of the License at
 
     http://www.apache.org/licenses/LICENSE-2.0
@@ -440,6 +439,6 @@ implied. See the License for the specific language governing
 permissions and limitations under the License.
 
 [1]: https://github.com/gonum
-[2]: https://github.com/go-gota/gota
-[3]: https://godoc.org/github.com/go-gota/gota/dataframe
-[4]: https://godoc.org/github.com/go-gota/gota/series
+[2]: https://github.com/symflower/gota
+[3]: https://godoc.org/github.com/symflower/gota/dataframe
+[4]: https://godoc.org/github.com/symflower/gota/series

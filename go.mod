@@ -1,4 +1,4 @@
-module github.com/go-gota/gota
+module github.com/symflower/gota
 
 go 1.23.6
 
