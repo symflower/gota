@@ -2451,6 +2451,19 @@ func TestDataFrame_Arrange2(t *testing.T) {
 				series.New([]string{"100", "103", "100", "103", "100", "103", "100", "103"}, series.Int, "B"),
 			),
 		},
+		{
+			New(
+				series.New([]string{"c", "a", "b"}, series.String, "String"),
+				series.New([]int{2, 1, 3}, series.Int, "Int"),
+				series.New([]float64{2.0, 3.0, 1.0}, series.Float, "Float"),
+			),
+			[]Order{Sort("String"), Sort("Int"), Sort("Float")},
+			New(
+				series.New([]string{"a", "b", "c"}, series.String, "String"),
+				series.New([]int{1, 3, 2}, series.Int, "Int"),
+				series.New([]float64{3.0, 1.0, 2.0}, series.Float, "Float"),
+			),
+		},
 	}
 	for i, tc := range table {
 		b := tc.df.Arrange(tc.colnames...)

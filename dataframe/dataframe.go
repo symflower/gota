@@ -808,7 +808,7 @@ func (df DataFrame) Arrange(order ...Order) DataFrame {
 	for i := len(order) - 1; i >= 0; i-- {
 		colname := order[i].Colname
 		idx := df.colIndex(colname)
-		nextSeries := df.columns[idx].Subset(suborder)
+		nextSeries := df.columns[idx].Subset(origIdx)
 		suborder = nextSeries.Order(order[i].Reverse)
 		swapOrigIdx(suborder)
 	}
